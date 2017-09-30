@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html>
+
+
+	<head>
+    
+    	<title>SwordVoice WEB Dialer</title><!--titulo de la pestana-->
+        <link rel="icon" sizes="192x192" href="imagenes/dialpad_sw.png"><!--favico-->
+        <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css"><!--fuente de google Roboto-->
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!--<link rel="stylesheet" href="css/main.css">-->
+		<link rel="stylesheet" type="text/css" media="screen" href="https://cdn.conversejs.org/css/converse.min.css">
+		<script src="https://cdn.conversejs.org/dist/converse.min.js"></script>
+		
+		  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">  
+			
+		<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<!-- JavaScript -->
+		<script src="//cdn.jsdelivr.net/alertifyjs/1.10.0/alertify.min.js"></script>
+		
+		
+			<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+            <script src="js/lib/sip-0.7.7.min.js"></script>
+			<script src="js/lib/notify.js"></script>
+			<script src="js/lib/is.js"></script>
+			
+			
+		<!-- CSS -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/alertify.min.css"/>
+		<!-- Default theme -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/default.min.css"/>
+		
+		
+		<!-- Semantic UI theme -->
+		<!--<link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/semantic.min.css"/>-->
+		<!-- Bootstrap theme -->
+		<!--<link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/bootstrap.min.css"/>-->
+
+		
+		
+		<!-- 
+			RTL version
+		-->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/alertify.rtl.min.css"/>
+		<!-- Default theme -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/default.rtl.min.css"/>
+		<!-- Semantic UI theme -->
+		<!--<link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/semantic.rtl.min.css"/>-->
+		<!-- Bootstrap theme -->
+		<!--<link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/bootstrap.rtl.min.css"/>-->
+
+
+
+
+		
+		</style>
+        
+        
+        	
+        
+    </head>
+ 
+
+<body >
+
+
+  
+            
+            
+            
+
+ 
+          
+			<script>
+			
+			var myName = {
+first: 'Simon',
+last: 'Holmes'
+},
+age = 37,
+country = 'UK';
+console.log("1:", myName.first, myName.last);
+var changeDetails = (function () {
+console.log("2:", 	age, country);
+var age = 35;
+country = 'United Kingdom';
+console.log("3:", age, country);
+var reduceAge = function (step) {
+age = age - step;
+console.log("4: Age:", age);
+};
+var doAgeIncrease = function (step) {
+for (var i = 0; i <= step; i++){
+window.age += 1;
+}
+console.log("5: Age:", window.age);
+},
+increaseAge = function (step) {
+var waitForIncrease = setTimeout(function(){
+doAgeIncrease(step);
+},step * 200);
+};
+console.log("6:",myName.first, myName.last, age, country);
+return {
+reduceAge : reduceAge,
+increaseAge : increaseAge
+};
+})();
+
+changeDetails.increaseAge(5);
+console.log("7:", age, country);
+changeDetails.reduceAge(5);
+console.log("8:", age, country);
+
+var nameSetup = {
+firstname : 'Simon',
+fullname : '',
+addSurname : function(){
+var surname = 'Holmes';
+nameSetup.fullname = nameSetup.firstname + ' ' + surname;
+console.log(nameSetup.fullname);
+}
+};
+nameSetup.addSurname();
+console.log(nameSetup.fullname);
+
+nameSetup.addInitial = function (initial){
+nameSetup.fullname=nameSetup.fullname.replace( ' ', ' '+initial+' ');
+console.log(nameSetup.fullname);
+};
+
+nameSetup.addInitial('O');
+
+console.log(nameSetup.fullname);
+
+
+
+			</script>
+           
+  
+
+	  
+            
+        
+     
+	
+		
+
+    </body>
+    
+</html>
+		
+  

@@ -15,9 +15,11 @@ var crtlOthers = require('../controllers/others');
 /* Locations pages */
 
 router.get('/', crtlLocations.homeList);
-router.get('/location', crtlLocations.locationInfo);
+router.get('/location/:locationid', crtlLocations.locationInfo);
 //router.get('/location/review/new', crtlLocations.addReview2);
-router.get('/addReview', crtlLocations.addReview);
+router.get('/addReview/:locationid', crtlLocations.addReview);
+router.post('/addReview/:locationid', crtlLocations.doAddReview);
+//router.get('/addReview', ctrlLocations.addReviewDone);
 
 
 /* Other pages */
