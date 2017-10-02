@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 var renderHomepage = function(req, res,responseBody){
 	var message;
 		if (!(responseBody instanceof Array)) {//si la respuesta no es un arreglo
-			message = "API lookup error";
+			message = "API lookup error " + process.env.NODE_ENV + " server " + apiOptions.server;
 			responseBody = [];//coloca el arreglo a vacio
 		} else {//si la respuesta es un arreglo
 			if (!responseBody.length) {//pero ese arreglo esta vacio
@@ -69,15 +69,17 @@ module.exports.homeList = function(req,res){
 	path = '/api/locations';
 	requestOptions = {
 		url : apiOptions.server + path,
+		//url : "http://localhost:3000" + path,
 		method : "GET",
 		json : {},
 		qs : {
-			lng : 0,//-0.7704837,//-0.7992599,
-			lat : 0,//51.4564298,//51.378091,
+			lng : -0.7704837,//-0.7704837,//-0.7992599,
+			lat : 51.4564298,//51.4564298,//51.378091,
 			maxDistance : 5900000
 		}
 	};
 
+	console.log("Se a a realizar el GET con estas opciones " + apiOptions.server );
 	request(
 		requestOptions,
 		function(err, response, body) {
