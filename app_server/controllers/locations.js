@@ -5,13 +5,13 @@ var apiOptions = {
   server : "http://localhost:3000"
 };
 if (process.env.NODE_ENV === 'production') {
-  apiOptions.server = "https://arcane-cliffs-63334.herokuapp.com/";
+  apiOptions.server = "https://arcane-cliffs-63334.herokuapp.com";
 }
 
 var renderHomepage = function(req, res,responseBody){
 	var message;
 		if (!(responseBody instanceof Array)) {//si la respuesta no es un arreglo
-			message = "API lookup error " + process.env.NODE_ENV + " server " + apiOptions.server;
+			message = "API lookup error ";
 			responseBody = [];//coloca el arreglo a vacio
 		} else {//si la respuesta es un arreglo
 			if (!responseBody.length) {//pero ese arreglo esta vacio
