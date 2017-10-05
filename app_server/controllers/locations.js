@@ -8,8 +8,9 @@ if (process.env.NODE_ENV === 'production') {
   apiOptions.server = "https://arcane-cliffs-63334.herokuapp.com";
 }
 
-var renderHomepage = function(req, res,responseBody){
-	var message;
+var renderHomepage = function(req, res){
+	//Se quito para probar Angular
+	/*var message;
 		if (!(responseBody instanceof Array)) {//si la respuesta no es un arreglo
 			message = "API lookup error ";
 			responseBody = [];//coloca el arreglo a vacio
@@ -17,7 +18,7 @@ var renderHomepage = function(req, res,responseBody){
 			if (!responseBody.length) {//pero ese arreglo esta vacio
 				message = "No places found nearby";
 			}
-		}
+		}*/
 	res.render('locations-list',{ 
 		title:'Loc8r - find a place to work with wifi',
 		pageHeader: {
@@ -25,8 +26,9 @@ var renderHomepage = function(req, res,responseBody){
 			strapline: 'Find places to work with wifi near you!'
 		},
 		sidebar: "Looking for wifi and a seat? Loc8r helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let Loc8r help you find the place you're looking for.",
-		locations:responseBody,
-		message: message
+		//Se quito para Angular
+		/*locations:responseBody,
+		message: message*/
 		/*locations: [{
 			name: 'Starcups',
 			address: '125 High Street, Reading, RG6 1PS',
@@ -52,7 +54,7 @@ var renderHomepage = function(req, res,responseBody){
 	});
 }
 
-var _formatDistance = function (distance) {
+/*var _formatDistance = function (distance) {
 	var numDistance, unit;
 	if (distance > 1000) {
 		numDistance = parseFloat(distance/1000).toFixed(1);
@@ -62,9 +64,15 @@ var _formatDistance = function (distance) {
 		unit = ' m';
 	}
 	return numDistance + unit;
-};
+};*/
+
+
 /* GET 'home' page */
+
+/*Se quita para probar ANGULAR
 module.exports.homeList = function(req,res){
+
+
 	var requestOptions, path;
 	path = '/api/locations';
 	requestOptions = {
@@ -75,7 +83,7 @@ module.exports.homeList = function(req,res){
 		qs : {
 			lng : -0.7704837,//-0.7704837,//-0.7992599,
 			lat : 51.4564298,//51.4564298,//51.378091,
-			maxDistance : 5900000
+			maxDistance : 9999999
 		}
 	};
 
@@ -95,7 +103,11 @@ module.exports.homeList = function(req,res){
 	);
 		
 		
-};
+};*/
+
+module.exports.homeList = function(req, res){
+	renderHomepage(req, res);
+};	
 
 /* GET 'Location Info' page 
 module.exports.locationInfo = function(req,res){

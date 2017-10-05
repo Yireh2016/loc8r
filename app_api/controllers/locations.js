@@ -36,7 +36,7 @@ module.exports.locationsListByDistance = function(req,res){//query GET /api/loca
 
 	Loc.geoNear(point, options, function (err, results, stats) {
 		var locations = [];
-		console.log(results);
+		//console.log(results);
 
 
 		results.forEach(function(doc) {
@@ -152,6 +152,23 @@ module.exports.locationsUpdateOne = function(req,res){
 	);
 
 };
-module.exports.locationsDeleteOne = function(req,res){
-	sendJSONresponse(res, 200, {"status" : "success"});
+
+module.exports.locationsDeleteOne = function(req, res) {
+	var locationid = req.params.locationid;
+	if (locationid) {
+		Loc
+		.findByIdAndRemove(locationid)
+		.exec(
+		function(err, location) {
+			if (err) {
+				sendJSONresponse(res, 404, err);
+			return;
+			}
+				sendJSONresponse(res, 204, null);
+		});
+	} else {
+		sendJSONresponse(res, 404, {
+			"message": "No locationid"
+		});
+	}
 };
