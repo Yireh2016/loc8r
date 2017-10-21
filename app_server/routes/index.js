@@ -14,7 +14,9 @@ var crtlOthers = require('../controllers/others');
 
 /* Locations pages */
 
-router.get('/', crtlLocations.homeList);
+//router.get('/', crtlLocations.homeList);
+router.get('/', crtlOthers.angularApp);//App Angular
+
 router.get('/location/:locationid', crtlLocations.locationInfo);
 //router.get('/location/review/new', crtlLocations.addReview2);
 router.get('/addReview/:locationid', crtlLocations.addReview);

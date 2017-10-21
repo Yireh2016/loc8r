@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 var Loc = mongoose.model('Location');
+var User = mongoose.model('User');//se requiere del modelo USER
+
 
 var sendJSONresponse = function(res, status, content) {
 	res.status(status);
@@ -7,34 +9,69 @@ var sendJSONresponse = function(res, status, content) {
 };
 
 module.exports.reviewsCreate = function(req,res){
-	var locationid = req.params.locationid;
-	if (locationid) {
-		Loc
-		.findById(locationid)
-		.select('reviews').exec(
-			function(err, location) {//location viene del findById
-				if (err) {
-					sendJSONresponse(res, 400, err);
-				}else {
-					doAddReview(req, res, location);
-				}
-			}
-		);
-	} else {
-		sendJSONresponse(res, 404, {
-			"message": "Not found, locationid required"
-		});
-	}
+
+  getAuthor(req, res, function (req, res, userName){
+    var locationid = req.params.locationid;
+      if (locationid) {
+        Loc
+        .findById(locationid)
+        .select('reviews').exec(
+          function(err, location) {//location viene del findById
+            if (err) {
+              sendJSONresponse(res, 400, err);
+            }else {
+              doAddReview(req, res, location, userName);
+            }
+          }
+        );
+      } else {
+        sendJSONresponse(res, 404, {
+          "message": "Not found, locationid required"
+        });
+      }
+    });
 
 };
 
 
-var doAddReview = function(req, res, location) {
+var getAuthor = function(req, res, callback) {
+  console.log("Finding author with email " + req.payload.email);
+  if (req.payload.email) { //verifica si la informacion del token esta en el objeto REQUEST
+    User
+      .findOne({ email : req.payload.email })//Use email address to find user
+      .exec(function(err, user) {
+        if (!user) {
+          sendJSONresponse(res, 404, {
+            "message": "User not found"
+          });
+          return;
+        } else if (err) {
+          console.log(err);
+          sendJSONresponse(res, 404, err);
+          return;
+        }
+        console.log(user);
+        callback(req, res, user.name);
+      });
+
+  } else {
+    sendJSONresponse(res, 404, {
+      "message": "User not found"
+    });
+    return;
+  }
+
+};
+
+
+
+
+var doAddReview = function(req, res, location , author) {
   if (!location) {
     sendJSONresponse(res, 404, "locationid not found");
   } else {
     location.reviews.push({//los reviews son arreglos por ende con el comando push se agrega un nuevo objeto review al arreglo
-      author: req.body.author,
+      author: author,
       rating: req.body.rating,
       reviewText: req.body.reviewText
     });

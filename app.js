@@ -1,3 +1,4 @@
+require('dotenv').load();//se cargan las variables de enviaroment para maneter secreto el password que genera el signature de el JWT
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -5,7 +6,12 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var passport = require('passport');//el passport debe estar antes de los modelos ya que se usa para definirlos
 require('./app_api/models/db');
+require('./app_api/config/passport');// La estrategia debe estar despues de los modelos 
+
+var uglifyJs = require("uglify-js");
+var fs = require('fs');
 
 //var index = require('./app_server/routes/index');
 var routes = require('./app_server/routes/index');
@@ -14,9 +20,46 @@ var users = require('./app_server/routes/users');
 
 var app = express();
 
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'app_server','views'));
 app.set('view engine', 'jade');
+
+// Setting uglify files
+
+var appClientFiles = [//
+	'app_client/app.js',
+	'app_client/home/home.controller.js',
+	'app_client/about/about.controller.js',
+	'app_client/locationDetail/locationDetail.controller.js',
+	'app_client/reviewModal/reviewModal.controller.js',
+	'app_client/auth/register/register.controller.js',//
+	'app_client/auth/login/login.controller.js',//
+	'app_client/common/services/geolocation.service.js',
+	'app_client/common/services/loc8rData.service.js',//
+	'app_client/common/services/authentication.service.js',//
+	'app_client/common/services/oldPath.service.js',//
+	'app_client/common/filters/formatDistance.filter.js',
+	'app_client/common/filters/addHtmlLineBreaks.filter.js',
+	'app_client/common/directives/navigation/navigation.directive.js',
+	'app_client/common/directives/navigation/navigation.controller.js',
+	'app_client/common/directives/footerGeneric/footerGeneric.directive.js',
+	'app_client/common/directives/pageHeader/pageHeader.directive.js',
+	'app_client/common/directives/ratingStars/ratingStars.directive.js'
+	
+
+	
+
+];
+var uglified = uglifyJs.minify(appClientFiles, { compress : false });
+fs.writeFile('public/angular/loc8r.min.js', uglified.code, function (err){
+	if(err) {
+		console.log(err);
+	} else {
+		console.log('Script generated and saved: loc8r.min.js');
+	}
+});
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -27,10 +70,18 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'app_client')));
 
-app.use('/', routes);
+
+app.use(passport.initialize());//Passport should be initialized in app.js after the static routes have been defined,
+								//and before the routes that are going to use authentication
+
+
+//app.use('/', routes);
 //app.use('/', index);
 app.use('/api', routesApi);
-app.use('/users', users);
+//app.use('/users', users);
+app.use(function(req, res) {//se va a mandar siempre el archivo por default index.html SPA
+	res.sendFile(path.join(__dirname, 'app_client', 'index.html'));
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -39,7 +90,17 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-// error handler
+// error handlers
+
+// Catch unauthorised errors
+app.use(function (err, req, res, next) {
+	if (err.name === 'UnauthorizedError') {
+		res.status(401);
+		res.json({"message" : err.name + ": " + err.message});
+	}
+});
+
+
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;

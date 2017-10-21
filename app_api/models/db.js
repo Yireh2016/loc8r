@@ -47,3 +47,4 @@ process.on('SIGTERM', function() {
 
 
 require('./locations');
+require('./users');//autenticar usuarions SPA MEAN STACK
